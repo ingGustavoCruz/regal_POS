@@ -97,20 +97,31 @@ if ($cats) {
 
 <div id="checkoutModal" class="modal-overlay" style="display: none;">
   <div class="modal-content">
-    <h2>¿A nombre de quién preparamos tu pedido?</h2>
     
-    <input type="text" id="clientName" placeholder="Toca aquí para escribir tu nombre..." autocomplete="off">
-    
-    <div class="modal-divider">
-      <span>O</span>
+    <div id="checkoutDefaultState">
+      <h2>¿A nombre de quién preparamos tu pedido?</h2>
+      <input type="text" id="clientName" placeholder="Toca aquí para escribir tu nombre..." autocomplete="off">
+      
+      <div class="modal-divider"><span>O</span></div>
+
+      <button id="scanQrBtn" class="qr-btn">📷 Escanear mi código Régal</button>
+
+      <div class="modal-actions">
+        <button id="cancelModalBtn" class="cancel-btn">Cancelar</button>
+        <button id="confirmOrderBtn" class="confirm-btn">Confirmar Pedido</button>
+      </div>
     </div>
 
-    <button id="scanQrBtn" class="qr-btn">📷 Escanear mi código Régal</button>
-
-    <div class="modal-actions">
-      <button id="cancelModalBtn" class="cancel-btn">Cancelar</button>
-      <button id="confirmOrderBtn" class="confirm-btn">Confirmar Pedido</button>
+    <div id="checkoutScannerState" style="display: none; padding: 20px 0;">
+      <div style="font-size: 50px; margin-bottom: 15px;">📲</div>
+      <h3 style="color: var(--gold2); margin-top:0;">Acerca tu código al lector</h3>
+      <p style="color: var(--muted); margin-bottom: 30px;">El sistema lo detectará automáticamente.</p>
+      
+      <input type="text" id="hiddenQrInput" style="opacity: 0; position: absolute; left: -9999px;" autocomplete="off">
+      
+      <button id="cancelScanBtn" class="cancel-btn" style="width: 100%;">Regresar</button>
     </div>
+
   </div>
 </div>
 

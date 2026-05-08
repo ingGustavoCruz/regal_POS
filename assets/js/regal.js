@@ -171,25 +171,78 @@ function renderCart() {
   payBtn.disabled = cart.length === 0;
 }
 
+// ==========================================
+// LÓGICA DEL MODAL Y LECTOR QR
+// ==========================================
 const checkoutModal = document.getElementById("checkoutModal");
+const checkoutDefaultState = document.getElementById("checkoutDefaultState");
+const checkoutScannerState = document.getElementById("checkoutScannerState");
+
 const clientNameInput = document.getElementById("clientName");
+const hiddenQrInput = document.getElementById("hiddenQrInput");
+
 const cancelModalBtn = document.getElementById("cancelModalBtn");
 const confirmOrderBtn = document.getElementById("confirmOrderBtn");
+const scanQrBtn = document.getElementById("scanQrBtn");
+const cancelScanBtn = document.getElementById("cancelScanBtn");
 
-// 1. Al dar click en Pagar, abrimos el modal
+// 1. Abrir Modal
 payBtn.addEventListener("click", () => {
   if (cart.length === 0) return;
   checkoutModal.style.display = "flex";
-  clientNameInput.value = ""; // Limpiamos el campo
-  clientNameInput.focus(); // Enfocamos para que salga el teclado virtual
+  checkoutDefaultState.style.display = "block";
+  checkoutScannerState.style.display = "none";
+  clientNameInput.value = ""; 
+  clientNameInput.focus();
 });
 
-// 2. Botón de cancelar cierra el modal
+// 2. Cerrar Modal
 cancelModalBtn.addEventListener("click", () => {
   checkoutModal.style.display = "none";
 });
 
-// 3. Confirmar pedido (AQUÍ VA TU FETCH ORIGINAL)
+// 3. Pasar a "Modo Escáner"
+scanQrBtn.addEventListener("click", () => {
+  checkoutDefaultState.style.display = "none";
+  checkoutScannerState.style.display = "block";
+  
+  // Limpiamos y forzamos el foco al input invisible
+  hiddenQrInput.value = "";
+  hiddenQrInput.focus();
+});
+
+// Si el usuario toca la pantalla mientras dice "Acerca tu código...", 
+// nos aseguramos de no perder el foco del input invisible
+checkoutScannerState.addEventListener("click", () => {
+  hiddenQrInput.focus();
+});
+
+// 4. Salir de "Modo Escáner"
+cancelScanBtn.addEventListener("click", () => {
+  checkoutScannerState.style.display = "none";
+  checkoutDefaultState.style.display = "block";
+  clientNameInput.focus();
+});
+
+// 5. ¡ATRAPAR EL CÓDIGO DEL ESCÁNER!
+hiddenQrInput.addEventListener("keypress", (e) => {
+  // El lector siempre manda un 'Enter' al terminar de leer
+  if (e.key === "Enter") {
+    const qrData = hiddenQrInput.value.trim();
+    if (qrData !== "") {
+      // Por ahora, solo haremos un alert para comprobar que funciona.
+      // Aquí conectaremos la API para buscar al cliente.
+      alert(`¡Código escaneado exitosamente!\nValor: ${qrData}`);
+      
+      // Regresamos al estado original (temporalmente hasta conectar BD)
+      checkoutScannerState.style.display = "none";
+      checkoutDefaultState.style.display = "block";
+      clientNameInput.value = qrData; // Ponemos el código en el nombre de prueba
+    }
+  }
+});
+
+// 6. Confirmar pedido (El flujo normal que ya tenías)
 confirmOrderBtn.addEventListener("click", async () => {
   const nombreCliente = clientNameInput.value.trim() || "Cliente en Barra";
   
@@ -197,7 +250,6 @@ confirmOrderBtn.addEventListener("click", async () => {
   payBtn.disabled = true;
   payBtn.textContent = "Procesando...";
 
-  // Agregamos el nombre al payload
   const payload = {
     cliente: nombreCliente,
     cart: cart,
@@ -214,20 +266,16 @@ confirmOrderBtn.addEventListener("click", async () => {
     const data = await response.json();
 
     if (data.success) {
-      // 1. Mandamos imprimir el ticket físico llamando a la función que creamos
-      imprimirTicket(data.folio, cart, payload.total, payload.cliente); 
-
-      // 2. Notificamos al usuario con nuestro nuevo Modal
+      imprimirTicket(data.folio, cart, payload.total, payload.cliente);
+      
       const successModal = document.getElementById("successModal");
       document.getElementById("successFolio").textContent = data.folio;
       successModal.style.display = "flex";
 
-      // Lógica para cerrar el modal de éxito
       document.getElementById("closeSuccessBtn").onclick = () => {
         successModal.style.display = "none";
       };
-      
-      // 3. Limpiamos el carrito para el siguiente cliente
+
       cart = [];
       renderCart();
       renderProducts();

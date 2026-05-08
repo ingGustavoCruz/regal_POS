@@ -1,0 +1,8 @@
+# Ignorar subidas de imágenes
+assets/images/uploads/*
+!assets/images/uploads/.htaccess
+!assets/images/uploads/placeholder.png
+
+# Ignorar archivos temporales del sistema operativo
+.DS_Store
+Thumbs.db
