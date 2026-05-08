@@ -296,65 +296,121 @@ renderProducts();
 renderCart();
 
 function imprimirTicket(folio, cart, total, nombreCliente) {
+  // Aseguramos la ruta base para que encuentre las imágenes sin importar dónde estemos
+  const baseUrl = window.RegalData ? window.RegalData.baseUrl : '';
+
   // Abrimos una ventana temporal
   const ticketWindow = window.open('', '_blank', 'width=400,height=600');
   
   // Armamos la lista de productos
   let itemsHtml = cart.map(item => `
-      <div style="display: flex; justify-content: space-between; font-size: 14px; margin-bottom: 5px;">
+      <div style="display: flex; justify-content: space-between; font-size: 14px; margin-bottom: 4px;">
           <span>${item.qty}x ${item.name}</span>
           <span>$${(item.qty * item.price).toFixed(2)}</span>
       </div>
   `).join('');
 
-  // Dibujamos el HTML del ticket (Estilos monocromáticos, ancho fijo)
-  ticketWindow.document.write(`
+  const fechaImpresion = new Date().toLocaleString('es-MX');
+
+  // Dibujamos el HTML del ticket (Estilos monocromáticos, ancho fijo y estructura semántica)
+  const ticketHtml = `
+      <!DOCTYPE html>
       <html>
       <head>
+          <meta charset="UTF-8">
           <title>Ticket ${folio}</title>
           <style>
+              /* Reseteamos los márgenes por defecto de impresión del navegador */
+              @page { margin: 0; } 
+              
               body { 
-                font-family: 'Courier New', Courier, monospace; 
-                width: 80mm; /* Ancho estándar de impresora térmica */
-                margin: 0; 
-                padding: 10px; 
-                color: #000; 
+                  font-family: 'Courier New', Courier, monospace; 
+                  width: 80mm; /* Ancho estándar. Cámbialo a 58mm si tu rollo es más estrecho */
+                  margin: 0; 
+                  padding: 15px; 
+                  color: #000; 
+                  background: #fff;
+                  box-sizing: border-box;
               }
               .text-center { text-align: center; }
               .divider { border-bottom: 1px dashed #000; margin: 10px 0; }
               .total { font-weight: bold; font-size: 16px; margin-top: 10px; }
-              h2 { margin: 5px 0; font-size: 22px; }
               p { margin: 3px 0; font-size: 14px; }
+              
+              /* Clases específicas para el control de imágenes térmicas */
+              .logo-header {
+                  max-width: 70%;
+                  height: auto;
+                  margin: 0 auto 5px auto;
+                  display: block;
+              }
+              .qr-placeholder {
+                  max-width: 45%;
+                  height: auto;
+                  margin: 15px auto 5px auto;
+                  display: block;
+              }
+              .logo-footer {
+                  max-width: 35%;
+                  height: auto;
+                  margin: 5px auto 0 auto;
+                  display: block;
+              }
+              .powered-text {
+                  font-size: 10px;
+                  letter-spacing: 1px;
+                  margin-top: 15px;
+                  margin-bottom: 2px;
+              }
           </style>
       </head>
       <body>
-          <h2 class="text-center">RÉGAL</h2>
-          <p class="text-center">Coffee + Lounge</p>
+          <div class="text-center">
+              <img src="${baseUrl}/assets/images/logo-negro.png" alt="RÉGAL" class="logo-header">
+              <p>Coffee + Lounge</p>
+          </div>
+          
           <div class="divider"></div>
+          
           <p>Folio: <strong>${folio}</strong></p>
-          <p>Cliente: <strong>${nombreCliente}</strong></p> <p>Fecha: ${new Date().toLocaleString('es-MX')}</p>
-          <p>Fecha: ${new Date().toLocaleString('es-MX')}</p>
+          <p>Cliente: <strong>${nombreCliente}</strong></p>
+          <p>Fecha: ${fechaImpresion}</p>
+          
           <div class="divider"></div>
           
           ${itemsHtml}
           
           <div class="divider"></div>
+          
           <div style="display: flex; justify-content: space-between;" class="total">
               <span>TOTAL PENDIENTE</span>
               <span>$${total.toFixed(2)}</span>
           </div>
+          
           <div class="divider"></div>
-          <p class="text-center">¡Pasa a caja a realizar tu pago!</p>
-          <p class="text-center" style="font-size: 12px; margin-top: 15px;">Gracias por tu preferencia.</p>
+          
+          <div class="text-center">
+              <p>¡Pasa a caja a realizar tu pago!</p>
+              <p style="font-size: 12px; margin-top: 5px;">Gracias por tu preferencia.</p>
+              
+              <img src="${baseUrl}/assets/images/placeholder.svg" alt="QR Code" class="qr-placeholder">
+              <p style="font-size: 11px;">Escanea para facturar</p>
+              
+              <p class="powered-text">POWERED BY</p>
+              <img src="${baseUrl}/assets/images/KAI_NN.png" alt="KAI Experience" class="logo-footer">
+          </div>
       </body>
       </html>
-  `);
+  `;
   
+  ticketWindow.document.open();
+  ticketWindow.document.write(ticketHtml);
   ticketWindow.document.close();
-  ticketWindow.focus();
   
-  // Ejecutamos la impresión y cerramos la ventana al terminar
-  ticketWindow.print();
-  ticketWindow.onafterprint = () => ticketWindow.close();
+  // VETERAN TIP: Esperamos a que los PNG y SVG carguen en memoria antes de lanzar la impresión
+  ticketWindow.onload = () => {
+      ticketWindow.focus();
+      ticketWindow.print();
+      ticketWindow.onafterprint = () => ticketWindow.close();
+  };
 }
-
