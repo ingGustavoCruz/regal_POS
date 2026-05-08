@@ -128,7 +128,7 @@ if ($cats) {
 <div id="successModal" class="modal-overlay" style="display: none;">
   <div class="modal-content" style="text-align: center;">
     <div style="font-size: 60px; margin-bottom: 10px; animation: modalPopIn 0.5s ease;">✅</div>
-    <h2>¡Pedido Confirmado!</h2>
+    <h2>¡Pedido Confirmado, <span id="successClientName" style="color: var(--gold2);"></span>!</h2>
     <p style="color: var(--muted); font-size: 1.1rem; margin-bottom: 20px;">Tu orden ha sido enviada a barra.</p>
     
     <div style="background: rgba(255,255,255,0.05); padding: 20px; border-radius: 16px; margin-bottom: 25px; border: 1px dashed var(--gold);">

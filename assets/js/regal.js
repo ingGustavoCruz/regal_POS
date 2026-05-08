@@ -266,11 +266,15 @@ confirmOrderBtn.addEventListener("click", async () => {
     const data = await response.json();
 
     if (data.success) {
-      imprimirTicket(data.folio, cart, payload.total, payload.cliente);
-      
-      const successModal = document.getElementById("successModal");
-      document.getElementById("successFolio").textContent = data.folio;
-      successModal.style.display = "flex";
+    imprimirTicket(data.folio, cart, payload.total, payload.cliente);
+    
+    const successModal = document.getElementById("successModal");
+    document.getElementById("successFolio").textContent = data.folio;
+    
+    // NUEVA LÍNEA: Inyectamos el nombre capturado
+    document.getElementById("successClientName").textContent = nombreCliente; 
+    
+    successModal.style.display = "flex";
 
       document.getElementById("closeSuccessBtn").onclick = () => {
         successModal.style.display = "none";
