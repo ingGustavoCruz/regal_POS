@@ -1,0 +1,880 @@
+:root {
+  --bg: #0b0907;
+  --panel: #17130f;
+  --gold: #c89b4f;
+  --gold2: #f2c879;
+  --cream: #fff3dd;
+  --muted: #b8ab99;
+  --line: rgba(255, 255, 255, 0.11);
+  --radius: 30px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background:
+    radial-gradient(circle at top left, #332314, transparent 34%),
+    linear-gradient(180deg, #120d08, #050403);
+  color: var(--cream);
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.kiosk {
+  width: min(100%, 1560px);
+  min-height: 100vh;
+  margin: auto;
+  padding: 22px;
+}
+
+.topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 18px;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.logo {
+  width: 54px;
+  height: 54px;
+  border-radius: 18px;
+  display: grid;
+  place-items: center;
+  background: linear-gradient(135deg, var(--gold2), var(--gold));
+  color: #1b1108;
+  font-size: 26px;
+}
+
+.brand strong {
+  display: block;
+  letter-spacing: 2px;
+}
+
+.brand small {
+  color: var(--muted);
+}
+
+.admin-btn {
+  border: 1px solid var(--line);
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--cream);
+  padding: 14px 20px;
+  border-radius: 999px;
+  font-weight: 800;
+}
+
+/* HERO */
+.hero {
+  /* background: var(--negro); */ /* Comentado */
+  color: var(--blanco);
+  text-align: center;
+  /* Aumentamos el padding para dar espacio al recuadro */
+  padding: clamp(1.5rem, 5vw, 3rem) 1.5rem;
+  position: relative;
+  overflow: hidden;
+  /* Fondo de imagen generada */
+  background-image: url('../images/hero-bg.jpg'); 
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+/* Ya no necesitamos el tinte radial */
+.hero::before { display: none; }
+.hero__subtitle{font-size:clamp(0.7rem,2vw,0.8rem);letter-spacing:0.3em;text-transform:uppercase;color:var(--topo-claro);margin-bottom:0.6rem}
+.hero__title {
+  font-family: var(--font-titulo);
+  /* Antes era: clamp(2rem, 6vw, 3.5rem) -> Ahora es ~0.75x menor */
+  font-size: clamp(1.5rem, 4.5vw, 2.6rem); 
+  font-weight: 400;
+  line-height: 1.1;
+  margin-bottom: 1rem;
+  color: var(--blanco); 
+}
+.hero__desc{font-size:clamp(0.9rem,2.5vw,1.05rem);color:rgba(255,255,255,0.65);max-width:42ch;margin:0 auto 2rem}
+/* 1. CAMBIAR LA LÍNEA A DORADO */
+.hero__divider {
+  width: 60px;
+  height: 2px;
+  background: var(--gold); /* Aquí cambiamos de --verde a --gold */
+  margin: 0 auto;
+  border-radius: 2px;
+}
+/* ==========================================
+   CAJA TRANSLÚCIDA DEL HERO (El sombreado)
+   ========================================== */
+/* LA CAJA NEGRA TRANSLÚCIDA */
+.hero__content-box {
+  background: rgba(26, 25, 21, 0.75); 
+  backdrop-filter: blur(8px); 
+  -webkit-backdrop-filter: blur(8px);
+  border-radius: var(--radius);
+  /* También reducimos un poco el relleno interno de esta caja para ahorrar espacio */
+  padding: clamp(1.5rem, 3.5vw, 2.5rem);
+  max-width: 60ch;
+  margin: 0 auto;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.5); 
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  z-index: 2; 
+}
+
+/* LOGO DENTRO DE LA CAJA */
+.hero__logo-tint {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  margin: 0 auto 1.5rem auto;
+}
+
+/* Quitamos el ::after para que luzca tu PNG original sin filtros raros */
+.hero__logo-tint:after { 
+  display: none; 
+}
+
+/* MODIFICAMOS LA CLASE EXISTENTE (Le quitamos centrado y márgenes para dárselos al contenedor) */
+.hero__logo {
+  /* Antes era: clamp(90px, 15vw, 130px) -> Ahora es ~1.25x mayor */
+  height: clamp(112px, 18vw, 162px); 
+  width: auto;
+  object-fit: contain;
+  display: block;
+  transition: transform var(--transition);
+  position: relative; 
+  z-index: 1; 
+}
+
+.hero__logo:hover {
+  transform: scale(1.03);
+}
+.toolbar {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 22px;
+}
+
+.filter-toggle {
+  border: 1px solid var(--line);
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--cream);
+  border-radius: 18px;
+  padding: 16px 18px;
+  font-size: 16px;
+  font-weight: 900;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.toolbar-copy strong {
+  display: block;
+  font-size: 18px;
+}
+
+.toolbar-copy small {
+  color: var(--muted);
+}
+
+.filter-drawer {
+  position: fixed;
+  inset: 0 auto 0 0;
+  width: min(380px, 88vw);
+  height: 100vh;
+  background: rgba(15, 11, 8, 0.96);
+  backdrop-filter: blur(20px);
+  border-right: 1px solid var(--line);
+  padding: 24px;
+  z-index: 100;
+  transform: translateX(-100%);
+  transition: transform 0.28s ease;
+}
+
+.filter-drawer.open {
+  transform: translateX(0);
+}
+
+.filter-drawer-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 22px;
+}
+
+.filter-drawer-head h3 {
+  margin: 0;
+  font-size: 24px;
+}
+
+.filter-drawer-head button {
+  width: 44px;
+  height: 44px;
+  border: 0;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--cream);
+  font-size: 20px;
+}
+
+.filter-list {
+  display: grid;
+  gap: 10px;
+}
+
+.tab {
+  width: 100%;
+  text-align: left;
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  padding: 18px;
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--cream);
+  font-size: 16px;
+  font-weight: 800;
+}
+
+.tab.active {
+  background: linear-gradient(135deg, var(--gold2), var(--gold));
+  color: #140d07;
+}
+
+.menu-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 330px;
+  gap: 22px;
+  align-items: start;
+}
+
+.menu-list {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.menu-card {
+  min-height: 345px;
+  display: flex;
+  flex-direction: column;
+  padding: 14px;
+  border: 1px solid var(--line);
+  border-radius: 28px;
+  background:
+    linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.075),
+      rgba(255, 255, 255, 0.025)
+    ),
+    rgba(255, 255, 255, 0.02);
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.22);
+}
+
+.menu-img {
+  width: 100%;
+  height: 155px;
+  border-radius: 22px;
+  object-fit: cover;
+  margin-bottom: 14px;
+}
+
+.menu-info {
+  flex: 1;
+}
+
+.menu-info h3 {
+  margin: 0 0 8px;
+  font-size: 23px;
+  line-height: 1.05;
+}
+
+.menu-info p {
+  margin: 0;
+  color: var(--muted);
+  line-height: 1.35;
+  font-size: 14px;
+}
+
+.badge {
+  display: inline-block;
+  margin-bottom: 10px;
+  padding: 7px 12px;
+  border-radius: 999px;
+  background: rgba(200, 155, 79, 0.16);
+  color: var(--gold2);
+  font-size: 12px;
+  font-weight: 900;
+}
+
+.menu-action {
+  margin-top: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.price {
+  margin: 0;
+  color: var(--gold2);
+  font-size: 28px;
+  font-weight: 900;
+}
+
+.order-box {
+  position: sticky;
+  top: 20px;
+  border: 1px solid var(--line);
+  border-radius: 32px;
+  padding: 24px;
+  background:
+    linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.055),
+      rgba(255, 255, 255, 0.02)
+    ),
+    rgba(18, 14, 11, 0.94);
+  backdrop-filter: blur(20px);
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.28);
+}
+
+.order-box h2 {
+  margin: 0 0 18px;
+  font-size: 28px;
+}
+
+.cart-items {
+  display: grid;
+  gap: 0;
+  max-height: 360px;
+  overflow: auto;
+}
+
+.empty {
+  color: var(--muted);
+}
+
+.cart-item {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--line);
+  font-size: 14px;
+}
+
+.cart-item strong {
+  color: var(--gold2);
+}
+
+.total-row {
+  display: flex;
+  justify-content: space-between;
+  margin: 24px 0 18px;
+  padding-top: 16px;
+  border-top: 1px solid var(--line);
+  font-size: 22px;
+}
+
+#payBtn {
+  width: 100%;
+  border: 0;
+  border-radius: 20px;
+  padding: 19px 22px;
+  background: linear-gradient(135deg, var(--gold2), var(--gold));
+  color: #140d07;
+  font-size: 18px;
+  font-weight: 950;
+  letter-spacing: 0.3px;
+  box-shadow:
+    0 16px 36px rgba(201, 155, 79, 0.25),
+    inset 0 1px 0 rgba(255, 255, 255, 0.35);
+  cursor: pointer;
+}
+
+#payBtn::before {
+  content: "💳 ";
+}
+
+#payBtn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+@media (max-width: 1250px) {
+  .menu-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .menu-list {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .order-box {
+    position: fixed;
+    left: 14px;
+    right: 14px;
+    bottom: 14px;
+    top: auto;
+    z-index: 20;
+  }
+
+  .cart-items {
+    display: none;
+  }
+
+  .kiosk {
+    padding-bottom: 185px;
+  }
+}
+
+@media (max-width: 950px) {
+  .menu-list {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .hero-main-logo {
+    width: 260px;
+  }
+}
+
+@media (max-width: 720px) {
+  .menu-list {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .hero {
+    min-height: 360px;
+    padding: 32px;
+  }
+
+  .hero h1 {
+    font-size: 48px;
+  }
+
+  .hero span {
+    font-size: 18px;
+  }
+}
+
+@media (max-width: 480px) {
+  .menu-list {
+    grid-template-columns: 1fr;
+  }
+
+  .hero-main-logo {
+    width: 190px;
+  }
+
+  .price {
+    font-size: 25px;
+  }
+}
+
+/* ==========================================
+   FOOTER Y LOGO KAI
+   ========================================== */
+footer {
+  margin-top: 4rem;
+  padding: 2rem;
+  text-align: center;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+  background:var(--negro);
+}
+
+.social-links {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  list-style: none;
+}
+
+.social-links a {
+  color: var(--gold);
+  font-size: 0.65rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  text-decoration: none;
+  transition: color 0.3s;
+}
+
+.social-links a:hover {
+  color: var(--cream);
+}
+
+.copyright {
+  font-size: 0.6rem;
+  letter-spacing: 0.1em;
+  color: rgba(138, 128, 112, 0.5);
+}
+
+.powered-by-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.8rem;
+  margin-top: 1rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid rgba(201, 168, 76, 0.1);
+  width: 100%;
+  max-width: 300px;
+}
+
+.powered-by-text {
+  font-size: 0.55rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.kai-logo {
+  height: 35px;
+  width: auto;
+  object-fit: contain;
+  /* Si tu logo es muy oscuro para el fondo negro, descomenta la siguiente línea: */
+  /* filter: invert(1) brightness(0.9); */
+  opacity: 0.7;
+  transition: opacity 0.3s;
+}
+
+.kai-logo:hover {
+  opacity: 1;
+}
+
+.toolbar-kiosk {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  padding: 20px;
+  background-color: #121212; /* Ajusta al fondo de tu Dark Mode */
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  border-bottom: 1px solid #333;
+}
+
+.category-tabs {
+  display: flex;
+  gap: 12px;
+  overflow-x: auto; /* Permite el scroll horizontal */
+  padding-bottom: 10px;
+  scroll-behavior: smooth;
+  scrollbar-width: none; /* Oculta la barra en Firefox */
+}
+
+.category-tabs::-webkit-scrollbar {
+  display: none; /* Oculta la barra en Chrome/Safari/Edge */
+}
+
+.category-tabs .tab {
+  white-space: nowrap; /* Evita que el texto se rompa en dos líneas */
+  padding: 12px 24px;
+  border-radius: 30px;
+  background: #2a2a2a;
+  color: #fff;
+  border: 1px solid #444;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.category-tabs .tab.active {
+  background: #cba052; /* Tu dorado corporativo */
+  color: #000;
+  border-color: #cba052;
+}
+/* ==========================================
+   FIX PARA KIOSKO VERTICAL (1080x1920)
+   ========================================== */
+@media (max-width: 1250px) and (min-height: 1500px) {
+  .order-box {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    top: auto;
+    border-radius: 32px 32px 0 0; /* Redondeamos solo la parte superior */
+    padding: 30px;
+    z-index: 999;
+    background: rgba(18, 14, 11, 0.98); /* Fondo más sólido para que no se mezcle con las fotos */
+  }
+
+  .cart-items {
+    display: grid !important; /* ¡Forzamos a que aparezcan los productos! */
+    max-height: 35vh; /* Le damos un tercio de la pantalla al carrito */
+    overflow-y: auto;
+  }
+
+  .kiosk {
+    /* Le damos un margen inferior gigante al contenedor principal 
+       para que el último producto del menú no quede escondido detrás del carrito */
+    padding-bottom: 45vh; 
+  }
+}
+
+/* ==========================================
+   BOTONES Y CONTROLES DE CANTIDAD (STEPPER)
+   ========================================== */
+
+/* Botón de agregar inicial en la tarjeta */
+.add-btn {
+  background: linear-gradient(135deg, var(--gold2), var(--gold));
+  color: #130d07;
+  border: none;
+  border-radius: 14px;
+  padding: 12px 20px;
+  font-size: 16px;
+  font-weight: 900;
+  cursor: pointer;
+  box-shadow: 0 8px 20px rgba(201, 155, 79, 0.25);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.add-btn:active {
+  transform: scale(0.95);
+}
+
+/* El control estilo "pastilla" de cantidad */
+.qty-control {
+  display: flex;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--gold);
+  border-radius: 999px; /* Forma de píldora perfecta */
+  overflow: hidden;
+  height: 42px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.qty-control button {
+  background: transparent;
+  border: none;
+  color: var(--gold2);
+  font-size: 22px;
+  width: 40px;
+  height: 100%;
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+  transition: background 0.2s, color 0.2s;
+}
+
+.qty-control button:active {
+  background: var(--gold);
+  color: #000;
+}
+
+.qty-control span {
+  color: var(--cream);
+  font-weight: 900;
+  font-size: 16px;
+  min-width: 30px;
+  text-align: center;
+  user-select: none;
+}
+
+/* Ajustes estructurales para el Carrito */
+.cart-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.cart-item-info {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  flex: 1;
+}
+
+.cart-item-name {
+  font-size: 15px;
+  color: var(--cream);
+  line-height: 1.2;
+}
+
+.cart-item-price {
+  color: var(--gold2);
+  font-size: 17px;
+}
+
+/* Hacemos la pastilla ligeramente más pequeña en el panel lateral */
+.cart-qty {
+  height: 36px;
+  border-color: rgba(201, 155, 79, 0.5); /* Borde más sutil en el carrito */
+}
+
+.cart-qty button {
+  font-size: 18px;
+  width: 35px;
+}
+
+/* ==========================================
+   MODAL DE CHECKOUT (NOMBRE / QR)
+   ========================================== */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.85); /* Fondo muy oscuro y semitransparente */
+  backdrop-filter: blur(10px); /* Efecto desenfoque en navegadores modernos */
+  -webkit-backdrop-filter: blur(10px);
+  z-index: 2000; /* Debe estar por encima de todo, incluso de .order-box */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.modal-content {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: clamp(2rem, 5vw, 3rem);
+  width: 100%;
+  max-width: 500px; /* Tamaño ideal para que no se estire demasiado en el kiosko */
+  text-align: center;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7);
+  animation: modalPopIn 0.3s ease-out forwards;
+}
+
+@keyframes modalPopIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95) translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+.modal-content h2 {
+  color: var(--cream);
+  font-size: clamp(1.4rem, 3vw, 1.8rem);
+  margin-top: 0;
+  margin-bottom: 1.5rem;
+  line-height: 1.3;
+}
+
+#clientName {
+  width: 100%;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--line);
+  color: var(--cream);
+  font-size: 1.2rem;
+  padding: 18px 20px;
+  border-radius: 16px;
+  text-align: center;
+  margin-bottom: 1.5rem;
+  transition: border-color 0.3s, background-color 0.3s;
+}
+
+#clientName:focus {
+  outline: none;
+  border-color: var(--gold);
+  background: rgba(255, 255, 255, 0.08);
+}
+
+#clientName::placeholder {
+  color: var(--muted);
+  font-size: 1rem;
+}
+
+.modal-divider {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  margin: 1.5rem 0;
+  color: var(--muted);
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+.modal-divider::before,
+.modal-divider::after {
+  content: '';
+  flex: 1;
+  border-bottom: 1px solid var(--line);
+}
+
+.modal-divider span {
+  padding: 0 15px;
+}
+
+.qr-btn {
+  width: 100%;
+  background: transparent;
+  border: 1px dashed var(--gold);
+  color: var(--gold2);
+  padding: 16px;
+  border-radius: 16px;
+  font-size: 1.1rem;
+  font-weight: bold;
+  cursor: pointer;
+  margin-bottom: 2rem;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.qr-btn:hover {
+  background: rgba(200, 155, 79, 0.1); /* Ligero tinte dorado al pasar el mouse/dedo */
+}
+
+.modal-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 15px;
+}
+
+.cancel-btn {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid var(--line);
+  color: var(--cream);
+  padding: 16px;
+  border-radius: 16px;
+  font-size: 1.1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.cancel-btn:hover {
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.confirm-btn {
+  background: linear-gradient(135deg, var(--gold2), var(--gold));
+  border: none;
+  color: #140d07;
+  padding: 16px;
+  border-radius: 16px;
+  font-size: 1.1rem;
+  font-weight: 900;
+  cursor: pointer;
+  box-shadow: 0 8px 20px rgba(201, 155, 79, 0.2);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.confirm-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 25px rgba(201, 155, 79, 0.3);
+}
