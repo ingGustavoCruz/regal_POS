@@ -4,7 +4,7 @@ Sistema Integral de Punto de Venta (Kiosko de Auto-Servicio) y Sistema de Pantal
 
 ## 🚀 Características Principales
 
-- **Kiosko Responsivo (Self-Service):** Interfaz táctil optimizada para pantallas en formato vertical (1080x1920). Diseño UI "Dark Mode" con acentos dorados.
+- **Kiosko Responsivo y Táctil (Self-Service):** Interfaz optimizada estrictamente para pantallas en formato vertical (1080x1920). Diseño UI "Pure Black" para máximo contraste/ahorro energético, combinado con elementos *Glassmorphism* (efecto cristal translúcido), acentos dorados y feedback visual inmediato al toque humano.
 - **Gestor de Carrito Inteligente:** Control de cantidades mediante _stepper_ (+/-) interactivo, renderizado dinámico y sin recargas, con hidratación de datos en cliente.
 - **Checkout Híbrido:** Captura de cliente por nombre y lector de código QR integrado simulando entrada de teclado.
 - **KDS en Tiempo Real:** Pantalla de cocina tipo Kanban con alertas sonoras para orquestación de la barra.
