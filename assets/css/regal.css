@@ -15,9 +15,7 @@
 
 body {
   margin: 0;
-  background:
-    radial-gradient(circle at top left, #332314, transparent 34%),
-    linear-gradient(180deg, #120d08, #050403);
+  background: #000000; /* Negro puro. Alternativa: var(--bg) si prefieres el tono #0b0907 */
   color: var(--cream);
   font-family: Arial, Helvetica, sans-serif;
 }
@@ -73,18 +71,20 @@ body {
 
 /* HERO */
 .hero {
-  /* background: var(--negro); */ /* Comentado */
-  color: var(--blanco);
+  /* Fondo fotográfico eliminado para un diseño más limpio */
+  /* background-image: url('../images/hero-bg.jpg'); */ 
+  
+  /* Nuevo fondo: Degradado sutil con los tonos de la marca */
+  background: linear-gradient(180deg, var(--panel), var(--bg));
+  
+  color: var(--blanco); /* Nota: Asegúrate de que --blanco exista, o usa var(--cream) */
   text-align: center;
-  /* Aumentamos el padding para dar espacio al recuadro */
   padding: clamp(1.5rem, 5vw, 3rem) 1.5rem;
   position: relative;
   overflow: hidden;
-  /* Fondo de imagen generada */
-  background-image: url('../images/hero-bg.jpg'); 
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
+  
+  /* Opcional: Un borde sutil en la parte inferior para separarlo del menú */
+  border-bottom: 1px solid var(--line);
 }
 /* Ya no necesitamos el tinte radial */
 .hero::before { display: none; }
@@ -107,20 +107,21 @@ body {
   margin: 0 auto;
   border-radius: 2px;
 }
+
 /* ==========================================
-   CAJA TRANSLÚCIDA DEL HERO (El sombreado)
+   CAJA TRANSLÚCIDA DEL HERO (Actualizada)
    ========================================== */
-/* LA CAJA NEGRA TRANSLÚCIDA */
 .hero__content-box {
-  background: rgba(26, 25, 21, 0.75); 
-  backdrop-filter: blur(8px); 
-  -webkit-backdrop-filter: blur(8px);
+  /* Reducimos la opacidad del fondo y eliminamos el blur para un look más plano y moderno */
+  background: transparent; 
   border-radius: var(--radius);
-  /* También reducimos un poco el relleno interno de esta caja para ahorrar espacio */
   padding: clamp(1.5rem, 3.5vw, 2.5rem);
   max-width: 60ch;
   margin: 0 auto;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.5); 
+  
+  /* Eliminamos la sombra pesada ya que no hay imagen de fondo que contrastar */
+  box-shadow: none; 
+  
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -265,16 +266,25 @@ body {
   display: flex;
   flex-direction: column;
   padding: 14px;
-  border: 1px solid var(--line);
+  /* Borde dorado súper sutil en lugar del blanco genérico */
+  border: 1px solid rgba(200, 155, 79, 0.15); 
   border-radius: 28px;
-  background:
-    linear-gradient(
+  /* Fondo un poco más cálido integrado con el panel */
+  background: linear-gradient(
       180deg,
-      rgba(255, 255, 255, 0.075),
-      rgba(255, 255, 255, 0.025)
+      rgba(200, 155, 79, 0.04),
+      rgba(255, 255, 255, 0.01)
     ),
-    rgba(255, 255, 255, 0.02);
-  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.22);
+    var(--panel);
+  /* Sombra más profunda para el fondo negro */
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6); 
+  transition: transform 0.2s ease, border-color 0.2s ease;
+}
+
+/* Feedback físico: La tarjeta reacciona al toque del usuario */
+.menu-card:active {
+  transform: scale(0.98); /* Se hace un 2% más pequeña simulando presión */
+  border-color: var(--gold);
 }
 
 .menu-img {
@@ -325,28 +335,6 @@ body {
   color: var(--gold2);
   font-size: 28px;
   font-weight: 900;
-}
-
-.order-box {
-  position: sticky;
-  top: 20px;
-  border: 1px solid var(--line);
-  border-radius: 32px;
-  padding: 24px;
-  background:
-    linear-gradient(
-      180deg,
-      rgba(255, 255, 255, 0.055),
-      rgba(255, 255, 255, 0.02)
-    ),
-    rgba(18, 14, 11, 0.94);
-  backdrop-filter: blur(20px);
-  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.28);
-}
-
-.order-box h2 {
-  margin: 0 0 18px;
-  font-size: 28px;
 }
 
 .cart-items {
@@ -406,33 +394,6 @@ body {
   opacity: 0.45;
   cursor: not-allowed;
   box-shadow: none;
-}
-
-@media (max-width: 1250px) {
-  .menu-layout {
-    grid-template-columns: 1fr;
-  }
-
-  .menu-list {
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-  }
-
-  .order-box {
-    position: fixed;
-    left: 14px;
-    right: 14px;
-    bottom: 14px;
-    top: auto;
-    z-index: 20;
-  }
-
-  .cart-items {
-    display: none;
-  }
-
-  .kiosk {
-    padding-bottom: 185px;
-  }
 }
 
 @media (max-width: 950px) {
@@ -578,50 +539,34 @@ footer {
 }
 
 .category-tabs .tab {
-  white-space: nowrap; /* Evita que el texto se rompa en dos líneas */
+  white-space: nowrap;
   padding: 12px 24px;
   border-radius: 30px;
-  background: #2a2a2a;
-  color: #fff;
-  border: 1px solid #444;
+  /* Fondo muy sutil en lugar de gris sólido */
+  background: rgba(255, 255, 255, 0.03); 
+  color: var(--muted); /* Letra apagada para los inactivos */
+  border: 1px solid rgba(255, 255, 255, 0.08); 
   cursor: pointer;
   font-size: 1rem;
   font-weight: 600;
-  transition: all 0.3s ease;
+  transition: all 0.2s ease;
 }
 
+/* Efecto visual al tocar la pantalla (Feedback táctil) */
+.category-tabs .tab:hover,
+.category-tabs .tab:active {
+  background: rgba(200, 155, 79, 0.1); /* Tinte dorado translúcido */
+  border-color: rgba(200, 155, 79, 0.3);
+  color: var(--cream);
+}
+
+/* Pestaña seleccionada */
 .category-tabs .tab.active {
-  background: #cba052; /* Tu dorado corporativo */
-  color: #000;
-  border-color: #cba052;
-}
-/* ==========================================
-   FIX PARA KIOSKO VERTICAL (1080x1920)
-   ========================================== */
-@media (max-width: 1250px) and (min-height: 1500px) {
-  .order-box {
-    position: fixed;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    top: auto;
-    border-radius: 32px 32px 0 0; /* Redondeamos solo la parte superior */
-    padding: 30px;
-    z-index: 999;
-    background: rgba(18, 14, 11, 0.98); /* Fondo más sólido para que no se mezcle con las fotos */
-  }
-
-  .cart-items {
-    display: grid !important; /* ¡Forzamos a que aparezcan los productos! */
-    max-height: 35vh; /* Le damos un tercio de la pantalla al carrito */
-    overflow-y: auto;
-  }
-
-  .kiosk {
-    /* Le damos un margen inferior gigante al contenedor principal 
-       para que el último producto del menú no quede escondido detrás del carrito */
-    padding-bottom: 45vh; 
-  }
+  background: linear-gradient(135deg, var(--gold2), var(--gold));
+  color: #140d07;
+  border-color: transparent;
+  /* Un resplandor para que "brille" sobre el fondo negro */
+  box-shadow: 0 4px 15px rgba(200, 155, 79, 0.25); 
 }
 
 /* ==========================================
@@ -877,4 +822,110 @@ footer {
 .confirm-btn:hover {
   transform: translateY(-2px);
   box-shadow: 0 12px 25px rgba(201, 155, 79, 0.3);
+}
+
+/* ==========================================
+   PANEL DE "MI PEDIDO" (Glassmorphism Base)
+   ========================================== */
+.order-box {
+  position: sticky;
+  top: 20px;
+  border: 1px solid rgba(200, 155, 79, 0.15); 
+  border-radius: 32px;
+  padding: 24px;
+  background: linear-gradient(
+      180deg,
+      rgba(200, 155, 79, 0.06), 
+      rgba(255, 255, 255, 0.01)
+    ),
+    rgba(18, 14, 11, 0.94); 
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5); 
+}
+
+.order-box h2 {
+  margin: 0 0 18px;
+  font-size: 28px;
+}
+
+.cart-items {
+  display: grid;
+  gap: 0;
+  max-height: 360px;
+  overflow-y: auto;
+}
+
+.empty {
+  color: var(--muted);
+}
+
+/* ==========================================
+   DISEÑO RESPONSIVO Y MODO KIOSKO (1080x1920)
+   ========================================== */
+
+/* Regla maestra para tu pantalla vertical de 21.5" */
+@media (max-width: 1250px) {
+  .menu-layout {
+    grid-template-columns: 1fr; /* El panel lateral pasa abajo */
+  }
+
+  /* Ajuste crucial: En 1080px, 3 columnas dan botones más grandes y fáciles de tocar que 4 */
+  .menu-list {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  /* Espaciado fijo y seguro para que el carrito no tape los últimos productos */
+  .kiosk {
+    padding-bottom: 420px; 
+  }
+
+  /* Anclaje estricto del carrito al fondo de la pantalla */
+  .order-box {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    top: auto;
+    border-radius: 32px 32px 0 0; /* Redondeado solo arriba */
+    padding: 30px 20px;
+    z-index: 999;
+    /* Un fondo ligeramente más sólido para que no se traslapen los textos al hacer scroll */
+    background: linear-gradient(
+        180deg,
+        rgba(200, 155, 79, 0.1),
+        rgba(18, 14, 11, 1) 20%
+      ),
+      #000000;
+    border-bottom: none;
+    box-shadow: 0 -15px 40px rgba(0, 0, 0, 0.8);
+  }
+
+  /* Forzamos el área scrolleable de los productos en el carrito */
+  .cart-items {
+    display: grid !important; 
+    max-height: 250px; /* Espacio para unos 3 productos antes de scrollear internamente */
+  }
+}
+
+/* Reglas adicionales para pantallas más pequeñas (Móviles, si decides abrirlo a web) */
+@media (max-width: 950px) {
+  .menu-list {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .hero-main-logo { width: 260px; }
+}
+
+@media (max-width: 720px) {
+  .hero {
+    min-height: 360px;
+    padding: 32px;
+  }
+}
+
+@media (max-width: 480px) {
+  .menu-list {
+    grid-template-columns: 1fr;
+  }
+  .hero-main-logo { width: 190px; }
 }
